@@ -1,0 +1,56 @@
+export const siteConfig = {
+  name: "Ketan Goyal",
+  domain: "ketangoyal.me",
+  url: "https://ketangoyal.me",
+  language: "en-IN",
+  locale: "en_IN",
+  tagline: "I learn by building.",
+  subline: "Technology, businesses, systems and experiments.",
+  email: "goyalketan2002@gmail.com",
+  titleTemplate: "%s | Ketan Goyal",
+  defaultDescription:
+    "Ketan Goyal is a builder who documents what he's building, in public, before he knows whether it will work. Technology, businesses, systems and experiments.",
+  social: {
+    instagram: "https://instagram.com/ketangoyal_001",
+    linkedin: "https://linkedin.com/in/ketan-goyal-profile",
+    github: null as string | null,
+    kraftt: "https://krafttdigital.in" as string | null,
+  },
+  nav: [
+    { label: "About", href: "/about" },
+    { label: "Journey", href: "/journey" },
+    { label: "Builds", href: "/builds" },
+    { label: "Writing", href: "/writing" },
+    { label: "Now", href: "/now" },
+    { label: "Contact", href: "/contact" },
+  ],
+  footerTagline: "Learning by building.",
+  profileImage: "/images/ketan/ketan-goyal-formal-candid.JPG",
+  organization: {
+    name: "Kraftt Digital",
+    url: "https://krafttdigital.in",
+    logo: "/images/kraftt/Primary Light.png",
+  },
+  seo: {
+    keywords: [
+      "Ketan Goyal",
+      "Ketan Goyal software engineer",
+      "software engineer portfolio India",
+      "software developer portfolio India",
+      "Next.js developer India",
+      "TypeScript developer India",
+      "PHP developer India",
+      "ecommerce software engineer",
+      "ecommerce developer India",
+      "Kraftt Digital founder",
+      "AI automation for small business India",
+      "digital transformation for small business India",
+      "business automation services India",
+      "website development for small business India",
+      "building in public India",
+      "digital for local business",
+    ],
+  },
+};
+
+export type SiteConfig = typeof siteConfig;

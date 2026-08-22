@@ -1,0 +1,730 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — see brand_guide.md §3-4 for the reasoning.
+  Palette is intentionally a cool, true-white "paper + ink" system.
+  Never introduce a warm/cream neutral here.
+*/
+:root {
+  --paper: #ffffff;
+  --fog: #f6f7f9;
+  --mist: #e4e6eb;
+  --ink: #14161b;
+  --slate: #4b505a;
+  --dust: #868c97;
+  --signal: #2f4cd1;
+  --signal-soft: #edf0fc;
+  --graphite: #0e0f12;
+
+  --content-max: 1280px;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-fog: var(--fog);
+  --color-mist: var(--mist);
+  --color-ink: var(--ink);
+  --color-slate: var(--slate);
+  --color-dust: var(--dust);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-graphite: var(--graphite);
+
+  --font-serif: var(--font-instrument-serif);
+  --font-sans: var(--font-manrope);
+  --font-mono: var(--font-mono-metadata);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Editorial serif headings - reserved for display moments only (brand_guide.md #4) */
+.font-display {
+  font-family: var(--font-serif), serif;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+
+/* Long-form body copy line-length rule */
+.prose-measure {
+  max-width: 65ch;
+}
+
+/* Eyebrow / label style */
+.eyebrow {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+/* Metadata / dates - the one signature mono detail */
+.meta-mono {
+  font-family: var(--font-mono-metadata), "IBM Plex Mono", monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+}
+
+/* Homepage artifact: a small, code-native 3D model with no graphics dependency. */
+.build-model {
+  --cube-size: clamp(7.5rem, 24vw, 10rem);
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 28rem;
+  min-height: 28rem;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--mist);
+  border-radius: 1.5rem;
+  background: var(--fog);
+}
+
+.build-model::before,
+.build-model::after {
+  content: "";
+  position: absolute;
+  background: var(--mist);
+}
+
+.build-model::before {
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+}
+
+.build-model::after {
+  top: 10%;
+  bottom: 10%;
+  left: 50%;
+  width: 1px;
+}
+
+.build-model__label,
+.build-model__coordinate {
+  position: absolute;
+  z-index: 4;
+  color: var(--dust);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+}
+
+.build-model__label {
+  top: 1.25rem;
+  left: 1.25rem;
+}
+
+.hero-kd {
+  margin-right: 5px;
+}
+
+.build-model__coordinate--top {
+  top: 1.25rem;
+  right: 1.25rem;
+}
+
+.build-model__coordinate--bottom {
+  right: 1.25rem;
+  bottom: 1.25rem;
+  color: var(--signal);
+}
+
+.build-model__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+}
+
+.build-model__cube {
+  position: relative;
+  width: var(--cube-size);
+  height: var(--cube-size);
+  transform-style: preserve-3d;
+  animation: build-model-turn 18s linear infinite;
+}
+
+.build-model__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--signal) 60%, var(--mist));
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  color: var(--signal);
+  font-family: var(--font-mono-metadata), "IBM Plex Mono", monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  backface-visibility: visible;
+}
+
+.build-model__face--front {
+  transform: translateZ(calc(var(--cube-size) / 2));
+}
+
+.build-model__face--back {
+  transform: rotateY(180deg) translateZ(calc(var(--cube-size) / 2));
+}
+
+.build-model__face--right {
+  transform: rotateY(90deg) translateZ(calc(var(--cube-size) / 2));
+  background: color-mix(in srgb, var(--signal-soft) 92%, transparent);
+}
+
+.build-model__face--left {
+  transform: rotateY(-90deg) translateZ(calc(var(--cube-size) / 2));
+  background: color-mix(in srgb, var(--signal-soft) 92%, transparent);
+}
+
+.build-model__face--top {
+  transform: rotateX(90deg) translateZ(calc(var(--cube-size) / 2));
+  background: color-mix(in srgb, var(--ink) 94%, transparent);
+  color: var(--paper);
+}
+
+.build-model__face--bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
+  background: color-mix(in srgb, var(--ink) 94%, transparent);
+  color: var(--paper);
+}
+
+.build-model__orbit {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  border: 1px solid color-mix(in srgb, var(--signal) 42%, var(--mist));
+  border-radius: 50%;
+}
+
+.build-model__orbit--wide {
+  width: 78%;
+  height: 34%;
+  transform: translate(-50%, -50%) rotate(-12deg);
+}
+
+.build-model__orbit--tall {
+  width: 38%;
+  height: 76%;
+  transform: translate(-50%, -50%) rotate(28deg);
+}
+
+@keyframes build-model-turn {
+  from {
+    transform: rotateX(-18deg) rotateY(0deg) rotateZ(-4deg);
+  }
+  to {
+    transform: rotateX(-18deg) rotateY(360deg) rotateZ(-4deg);
+  }
+}
+
+@media (max-width: 767px) {
+  .build-model {
+    min-height: 22rem;
+  }
+}
+
+/* Now page: a lightweight 3D systems model inspired by the Kraftt vision map. */
+.vision-model {
+  position: relative;
+  isolation: isolate;
+  min-height: 37rem;
+  overflow: hidden;
+  border: 1px solid var(--mist);
+  border-radius: 2rem;
+  background:
+    linear-gradient(color-mix(in srgb, var(--mist) 48%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--mist) 48%, transparent) 1px, transparent 1px),
+    radial-gradient(circle at 50% 43%, var(--paper) 0 20%, var(--fog) 68%);
+  background-size: 2rem 2rem, 2rem 2rem, 100% 100%;
+  box-shadow: 0 28px 80px rgba(20, 22, 27, 0.1);
+}
+
+.vision-model::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0 48%, rgba(255, 255, 255, 0.7) 50%, transparent 52%);
+  transform: translateY(-100%);
+  animation: vision-scan 7s ease-in-out infinite;
+}
+
+.vision-model__header {
+  position: absolute;
+  z-index: 5;
+  top: 1.25rem;
+  right: 1.25rem;
+  left: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--dust);
+}
+
+.vision-model__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--signal);
+}
+
+.vision-model__status span {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0.75rem color-mix(in srgb, var(--signal) 70%, transparent);
+}
+
+.vision-model__stage {
+  position: absolute;
+  z-index: 2;
+  inset: 3.5rem 1rem 7.5rem;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.vision-model__cube-wrap {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 50%;
+  width: 9rem;
+  height: 9rem;
+  transform: translate(-50%, -50%);
+  perspective: 800px;
+}
+
+.vision-model__cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: vision-cube-turn 22s linear infinite;
+}
+
+.vision-model__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  border: 1px solid color-mix(in srgb, var(--signal) 65%, var(--mist));
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  color: var(--ink);
+  font-family: var(--font-mono-metadata), "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-align: center;
+  box-shadow: inset 0 0 2rem color-mix(in srgb, var(--signal-soft) 72%, transparent);
+  backface-visibility: visible;
+}
+
+.vision-model__face strong,
+.vision-model__face small {
+  display: block;
+}
+
+.vision-model__face strong {
+  font-size: 0.88rem;
+}
+
+.vision-model__face small {
+  margin-top: 0.3rem;
+  color: var(--signal);
+  font-size: 0.65rem;
+}
+
+.vision-model__face--front {
+  transform: translateZ(4.5rem);
+}
+
+.vision-model__face--back {
+  transform: rotateY(180deg) translateZ(4.5rem);
+}
+
+.vision-model__face--right {
+  transform: rotateY(90deg) translateZ(4.5rem);
+  background: color-mix(in srgb, var(--signal-soft) 90%, transparent);
+}
+
+.vision-model__face--left {
+  transform: rotateY(-90deg) translateZ(4.5rem);
+  background: color-mix(in srgb, var(--signal-soft) 90%, transparent);
+}
+
+.vision-model__face--top {
+  transform: rotateX(90deg) translateZ(4.5rem);
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+  color: var(--paper);
+}
+
+.vision-model__face--bottom {
+  transform: rotateX(-90deg) translateZ(4.5rem);
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+  color: var(--paper);
+}
+
+.vision-model__ring {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  border: 1px solid color-mix(in srgb, var(--signal) 38%, var(--mist));
+  border-radius: 50%;
+  transform-style: preserve-3d;
+}
+
+.vision-model__ring--one {
+  width: 72%;
+  height: 38%;
+  transform: translate(-50%, -50%) rotateX(68deg) rotateZ(-12deg);
+}
+
+.vision-model__ring--two {
+  width: 62%;
+  height: 48%;
+  transform: translate(-50%, -50%) rotateX(65deg) rotateY(58deg) rotateZ(24deg);
+}
+
+.vision-model__ring--three {
+  width: 48%;
+  height: 72%;
+  transform: translate(-50%, -50%) rotateY(66deg) rotateZ(-16deg);
+}
+
+.vision-model__node {
+  --node-radius: 10rem;
+  position: absolute;
+  top: calc(50% - 0.35rem);
+  left: calc(50% - 0.35rem);
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 1px var(--signal), 0 0 1rem color-mix(in srgb, var(--signal) 58%, transparent);
+  animation: vision-node-orbit 8s linear infinite;
+}
+
+.vision-model__node--two {
+  --node-radius: 7rem;
+  animation-duration: 11s;
+  animation-direction: reverse;
+}
+
+.vision-model__node--three {
+  --node-radius: 8rem;
+  animation-duration: 13s;
+}
+
+.vision-model__satellite {
+  position: absolute;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--mist);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  padding: 0.5rem 0.7rem;
+  color: var(--ink);
+  font-family: var(--font-mono-metadata), "IBM Plex Mono", monospace;
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px rgba(20, 22, 27, 0.08);
+  backdrop-filter: blur(0.5rem);
+  animation: vision-satellite-float 5s ease-in-out infinite;
+}
+
+.vision-model__satellite i {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+.vision-model__satellite--1 {
+  top: 15%;
+  left: 4%;
+}
+
+.vision-model__satellite--2 {
+  top: 15%;
+  right: 4%;
+  animation-delay: -0.8s;
+}
+
+.vision-model__satellite--3 {
+  top: 46%;
+  left: 0;
+  animation-delay: -1.6s;
+}
+
+.vision-model__satellite--4 {
+  top: 46%;
+  right: 0;
+  animation-delay: -2.4s;
+}
+
+.vision-model__satellite--5 {
+  bottom: 9%;
+  left: 6%;
+  animation-delay: -3.2s;
+}
+
+.vision-model__satellite--6 {
+  right: 6%;
+  bottom: 9%;
+  animation-delay: -4s;
+}
+
+.vision-model__process {
+  position: absolute;
+  z-index: 5;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.vision-model__process div {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.vision-model__process span {
+  flex: 1;
+  border: 1px solid var(--mist);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  padding: 0.55rem 0.25rem;
+  color: var(--slate);
+  font-family: var(--font-mono-metadata), "IBM Plex Mono", monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  backdrop-filter: blur(0.4rem);
+}
+
+.vision-model__process b {
+  color: var(--dust);
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+
+.vision-model__process .is-active span {
+  border-color: var(--signal);
+  background: var(--signal);
+  color: var(--paper);
+}
+
+@keyframes vision-cube-turn {
+  from {
+    transform: rotateX(-18deg) rotateY(0deg) rotateZ(-4deg);
+  }
+  to {
+    transform: rotateX(-18deg) rotateY(360deg) rotateZ(-4deg);
+  }
+}
+
+@keyframes vision-node-orbit {
+  from {
+    transform: rotate(0deg) translateX(var(--node-radius)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--node-radius)) rotate(-360deg);
+  }
+}
+
+@keyframes vision-satellite-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.45rem);
+  }
+}
+
+@keyframes vision-scan {
+  0%,
+  18% {
+    transform: translateY(-100%);
+  }
+  68%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@media (max-width: 640px) {
+  .vision-model {
+    min-height: 31rem;
+    border-radius: 1.5rem;
+  }
+
+  .vision-model__stage {
+    inset: 3.25rem 0.65rem 7rem;
+  }
+
+  .vision-model__cube-wrap {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .vision-model__face--front {
+    transform: translateZ(3.5rem);
+  }
+
+  .vision-model__face--back {
+    transform: rotateY(180deg) translateZ(3.5rem);
+  }
+
+  .vision-model__face--right {
+    transform: rotateY(90deg) translateZ(3.5rem);
+  }
+
+  .vision-model__face--left {
+    transform: rotateY(-90deg) translateZ(3.5rem);
+  }
+
+  .vision-model__face--top {
+    transform: rotateX(90deg) translateZ(3.5rem);
+  }
+
+  .vision-model__face--bottom {
+    transform: rotateX(-90deg) translateZ(3.5rem);
+  }
+
+  .vision-model__node {
+    --node-radius: 6rem;
+  }
+
+  .vision-model__node--two {
+    --node-radius: 4.75rem;
+  }
+
+  .vision-model__node--three {
+    --node-radius: 5.25rem;
+  }
+
+  .vision-model__satellite {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.54rem;
+  }
+
+  .vision-model__satellite--3,
+  .vision-model__satellite--4 {
+    top: 48%;
+  }
+
+  .vision-model__process {
+    right: 0.7rem;
+    bottom: 0.8rem;
+    left: 0.7rem;
+    gap: 0.2rem;
+  }
+
+  .vision-model__process div {
+    gap: 0.2rem;
+  }
+
+  .vision-model__process span {
+    padding-block: 0.45rem;
+    font-size: 0.48rem;
+  }
+
+  .vision-model__process b {
+    display: none;
+  }
+}
+
+/* Journey page: viewport reveals plus a scroll-linked timeline progress line. */
+.journey-timeline__progress {
+  transform: scaleY(0);
+  transform-origin: top;
+  box-shadow: 0 0 0.8rem color-mix(in srgb, var(--signal) 35%, transparent);
+  will-change: transform;
+}
+
+.journey-timeline.is-animated .journey-scroll-item {
+  opacity: 0;
+  transform: translateY(1.75rem) scale(0.992);
+  transition:
+    opacity 650ms ease,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--journey-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.journey-timeline.is-animated .journey-scroll-item.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Focus states use --signal visibly, everywhere */
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .build-model__cube {
+    animation: none;
+    transform: rotateX(-18deg) rotateY(32deg) rotateZ(-4deg);
+  }
+
+  .vision-model__cube,
+  .vision-model__node,
+  .vision-model__satellite,
+  .vision-model::after {
+    animation: none;
+  }
+
+  .vision-model__cube {
+    transform: rotateX(-18deg) rotateY(32deg) rotateZ(-4deg);
+  }
+
+  .journey-timeline__progress {
+    transform: scaleY(1) !important;
+  }
+
+  .journey-scroll-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
