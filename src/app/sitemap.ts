@@ -89,7 +89,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const writingRoutes: MetadataRoute.Sitemap = writingPosts.map((post) => {
     const imageId = post.featuredImage.asset?._id;
     const image = imageId?.startsWith("image-")
-      ? urlForImage({asset: {_ref: imageId}}).width(1600).quality(82).url()
+      ? urlForImage({asset: {_ref: imageId}}).url().replace(/\?.*$/, "")
       : undefined;
 
     return {
