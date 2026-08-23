@@ -167,6 +167,9 @@ for (const slug of exportedWritingEntries) {
 }
 
 const sitemap = await readFile(path.join(outputDirectory, "sitemap.xml"), "utf8");
+if (/&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-f]+;)/i.test(sitemap)) {
+  errors.push("sitemap.xml contains an unescaped ampersand.");
+}
 for (const post of posts) {
   const articleUrl = `https://ketangoyal.me/writing/${post.slug}`;
   if (post.noIndex && sitemap.includes(articleUrl)) {
